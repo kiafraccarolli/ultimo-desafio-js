@@ -36,13 +36,15 @@
     })
   });
   
-  const actualizarCarrito = (carrito) => {
+  const actualizarCarrito = (newCarrito) => {
     contenedorCarrito.innerHTML = " ";
+    carrito = newCarrito;
+    localStorage.setItem("carrito", JSON.stringify(carrito));
+    
   
     carrito.forEach((prod) => {
       const div = document.createElement("div");
       div.className = "productoElegido";
-      div.setAttribute("id", prod.id);
       div.innerHTML = `
       <p>${prod.nombre}</p>
       <p>Precio: $${prod.precio}</p>
@@ -50,7 +52,7 @@
       <button id="${prod.id}" class="borrarUno" ><img src="./img/eliminar.png" alt=""></button>`;
   
       contenedorCarrito.appendChild(div);
-      localStorage.setItem("carrito", JSON.stringify(carrito));
+    
   
       let tacho = document.getElementById(prod.id);
   
@@ -72,7 +74,7 @@
   
   fetch("https://raw.githubusercontent.com/kiafraccarolli/basededatos-js/main/data.json")
         .then(o => o.json())
-        .then(data => data.forEach((producto) => {
+        .then(data => {data.forEach((producto) => {
           const div = document.createElement("div");
           div.classList.add(
             "estilosProducto",
@@ -114,6 +116,7 @@
             })
 
           });
+        });
           const agregarAlCarrito = (prodId) => {
             const existe = carrito.some((prod) => prod.id === prodId);
             if (existe) {
@@ -128,4 +131,4 @@
             }
             actualizarCarrito(carrito);
           };
-        }))
+        })
